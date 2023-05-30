@@ -132,11 +132,29 @@ export default class ExpoMixpanelAnalytics {
 
 		data = new Buffer(JSON.stringify(data)).toString("base64");
 
-		return fetch(`${MIXPANEL_API_URL}/track/?data=${data}`);
+		return (fetch(`${MIXPANEL_API_URL}/track/?data=${data}`)
+			.then((response) => {
+    				if (!response.ok) {
+					throw new Error('Network response was not ok');
+    					}
+			return response.json();
+			})
+			.catch((error) => {
+				console.error('Error fetching data:', error);
+			}));
 	}
 
 	_pushProfile(data) {
 		data = new Buffer(JSON.stringify(data)).toString("base64");
-		return fetch(`${MIXPANEL_API_URL}/engage/?data=${data}`);
+		return (fetch(`${MIXPANEL_API_URL}/engage/?data=${data}`)
+			.then((response) => {
+    				if (!response.ok) {
+					throw new Error('Network response was not ok');
+    					}
+			return response.json();
+			})
+			.catch((error) => {
+				console.error('Error fetching data:', error);
+			}));		
 	}
 }
