@@ -150,6 +150,19 @@ export default class ExpoMixpanelAnalytics {
 
 	_pushProfile(data) {
 		data = new Buffer(JSON.stringify(data)).toString("base64");
-		return fetch(`${MIXPANEL_API_URL}/engage/?data=${data}`);
+		return fetch(`${MIXPANEL_API_URL}/engage/?data=${data}`),
+		{
+			method: "GET",
+		  	headers: {
+			'Accept': 'application/json',
+			'Content-Type': 'application/json',
+		  	},
+		})
+		.then((response) => response.json())
+		.then((responseData) => {
+		  console.log(responseData);
+		  return responseData;
+		})
+		.catch(error => console.warn(error));
 	}
 }
